@@ -55,21 +55,37 @@
 			#info {
 				position: absolute;
 				top: 0px; width: 100%;
-				padding: 5px;
+				padding: 10px;
 				z-index:100;
 				box-sizing: border-box;
 			}
 
+			#top-border {
+				position: absolute;
+				top: 0px; width: 100%; height: 7.5px;
+				z-index:100;
+
+				background-color: red;			
+			}
+
+			#bot-border {
+				position: absolute;
+				bottom: 0px; width: 100%; height: 7.5px;
+				z-index:100;
+				
+				background-color: red;
+			}
+
 			#left-border {
 				position: absolute;
-				left: 0px; height: 100%;
+				left: 0px; height: 100%; width: 7.5px;
 				z-index: 100;
 				background-color: red;
 			}
 
 			#right-border {
 				position: absolute;
-				right: 0px; height: 100%;
+				right: 0px; height: 100%; width: 7.5px;
 				z-index: 100;
 				background-color: red;
 			}
@@ -103,6 +119,8 @@
 	</head>
 
 	<body>
+		<div id="top-border">&nbsp;</div>
+		<div id="bot-border">&nbsp;</div>
 		<div id="left-border">&nbsp;</div>
 		<div id="right-border">&nbsp;</div>
 
@@ -130,7 +148,7 @@
 			var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
 			var SCREEN_WIDTH = window.innerWidth;
 
-			var camera, controls, scene, renderer, stats;
+			var camera, controls, scene, renderer;
 
 			var geometry, material, circle;
 			var circleObj = new THREE.Object3D();
@@ -144,6 +162,13 @@
 			var d, dStation = new THREE.Vector3();
 
 			var clock = new THREE.Clock();
+
+			var leftB = document.getElementById('left-border');
+			var rightB = document.getElementById('right-border');
+
+			var topB = document.getElementById('top-border');
+			var botB = document.getElementById('bot-border');
+
 
 			init();
 			animate();
@@ -246,11 +271,6 @@
 				controls.autoForward = false;
 				controls.dragToLook = false;
 
-				//
-
-				stats = new Stats();
-				document.body.appendChild( stats.dom );
-
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				// postprocessing
@@ -304,8 +324,22 @@
 			    vector.x = ( vector.x * widthHalf ) + widthHalf;
 			    vector.y = - ( vector.y * heightHalf ) + heightHalf;
 			    
-				var div = document.getElementById('station_pos');
-				div.innerHTML = `space station: x: ${vector.x}, y: ${vector.y}`;
+				leftB.style.backgroundColor = "black";
+				rightB.style.backgroundColor = "black";
+				topB.style.backgroundColor = "black";
+				botB.style.backgroundColor = "black";
+
+				if (vector.x < 0) {
+					leftB.style.backgroundColor = "red";
+				} else if (vector.x > SCREEN_WIDTH) {
+					rightB.style.backgroundColor = "red";
+				}
+
+				if (vector.y < 0) {
+					topB.style.backgroundColor = "red";
+				} else if (vector.y > SCREEN_HEIGHT) {
+					botB.style.backgroundColor = "red";
+				}
 			}
 
 			function render() {
