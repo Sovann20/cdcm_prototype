@@ -31,6 +31,10 @@ THREE.FlyControls = function ( object, domElement ) {
 	this.moveVector = new THREE.Vector3( 0, 0, 0 );
 	this.rotationVector = new THREE.Vector3( 0, 0, 0 );
 
+
+	this.cntrlState = document.getElementById('control-info-state');
+	this.cntrlBtn = document.getElementById('contol-info-button');
+
 	// Pitch, Yaw active
 	this.qState = 0;
 
@@ -54,48 +58,70 @@ THREE.FlyControls = function ( object, domElement ) {
 			case 87: /*W*/ 
 				if (this.qState) {
 					this.moveState.pitchUp = 1;
+					this.cntrlBtn.innerHTML = '<b>W</b>: Pitch up';
 				} else if (this.eState) {
 					// Nothing
 				} else {
 					this.moveState.forward = 1;
+					this.cntrlBtn.innerHTML = '<b>W</b>: Move forward';
 				}
 				break;
 			case 83: /*S*/
 				if (this.qState) {
 					this.moveState.pitchDown = 1;
+					this.cntrlBtn.innerHTML = '<b>S</b>: Pitch down';
 				} else if (this.eState) {
 					// Nothing
 				} else {
 					this.moveState.back = 1;
+					this.cntrlBtn.innerHTML = '<b>S</b>: Move backward';
 				}
 				break;
 
 			case 65: /*A*/
 				if (this.qState) {
 					this.moveState.yawLeft = 1;
+					this.cntrlBtn.innerHTML = '<b>A</b>: Yaw left';
 				} else if (this.eState) {
 					this.moveState.rollLeft = 1;
+					this.cntrlBtn.innerHTML = '<b>A</b>: Roll left';
 				} else {
 					this.moveState.left = 1;
+					this.cntrlBtn.innerHTML = '<b>A</b>: Move left';
 				}
 				break;
 			case 68: /*D*/ 
 				if (this.qState) {
 					this.moveState.yawRight = 1;
+					this.cntrlBtn.innerHTML = '<b>D</b>: Yaw right';
 				} else if (this.eState) {
 					this.moveState.rollRight = 1;
+					this.cntrlBtn.innerHTML = '<b>A</b>: Roll right';
 				} else {
 					this.moveState.right = 1;
+					this.cntrlBtn.innerHTML = '<b>D</b>: Move right';
 				}				
 				break;
 
 			case 81: /*Q*/
-				this.qState ? this.qState = 0 : this.qState = 1;
-				if (this.qState) this.eState = 0;
+				if (this.qState) {
+					this.qState = 0;
+					this.cntrlState.innerHTML = 'DEFAULT (2D Plane Movement)';
+				} else {
+					this.eState = 0;
+					this.qState = 1;
+					this.cntrlState.innerHTML = 'Pitch/Yaw Mode';
+				}
 				break;
 			case 69: /*E*/
-				this.eState ? this.eState = 0 : this.eState = 1;
-				if (this.eState) this.qState = 0;
+				if (this.eState) {
+					this.eState = 0;
+					this.cntrlState.innerHTML = 'DEFAULT (2D Plane Movement)';
+				} else {
+					this.qState = 0;
+					this.eState = 1;
+					this.cntrlState.innerHTML = 'Roll Mode';
+				}
 				break;
 		}
 
@@ -105,6 +131,8 @@ THREE.FlyControls = function ( object, domElement ) {
 	};
 
 	this.keyup = function ( event ) {
+
+		this.cntrlBtn.innerHTML = "";
 
 		switch ( event.keyCode ) {
 
