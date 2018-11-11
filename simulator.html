@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- 
+		The MIT License
+		Copyright © 2018 Jacob Perin
+		Copyright © 2010-2018 three.js authors
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the "Software"), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+
+		The above copyright notice and this permission notice shall be included in
+		all copies or substantial portions of the Software.
+
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+		THE SOFTWARE.
+		--> 
+
+		<!-- 
+		This is modified version of:
+			https://threejs.org/examples/?q=contro#misc_controls_fly
+		cloned from:
+			https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_fly.html
+		----
+
+		This code has been modified to meet our prototype criteria 
+		-->
+
+		<title>Jetpack Simulator</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background:#000;
+				color: #eee;
+				padding:0;
+				margin:0;
+				font-weight:bold;
+				overflow:hidden;
+
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+			}
+
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+				z-index:100;
+				box-sizing: border-box;
+			}
+
+			#left-border {
+				position: absolute;
+				left: 0px; height: 100%;
+				z-index: 100;
+				background-color: red;
+			}
+
+			#right-border {
+				position: absolute;
+				right: 0px; height: 100%;
+				z-index: 100;
+				background-color: red;
+			}
+
+			a {
+
+				color: #0080ff;
+			}
+
+			b {
+				color:orange
+			}
+		</style>
+
+		<script src="build/three.js"></script>
+
+		<script src="js/controls/FlyControls.js"></script>
+
+		<script src="js/shaders/CopyShader.js"></script>
+		<script src="js/shaders/FilmShader.js"></script>
+
+		<script src="js/postprocessing/EffectComposer.js"></script>
+		<script src="js/postprocessing/ShaderPass.js"></script>
+		<script src="js/postprocessing/MaskPass.js"></script>
+		<script src="js/postprocessing/RenderPass.js"></script>
+		<script src="js/postprocessing/FilmPass.js"></script>
+
+		<script src="js/WebGL.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+
+	</head>
+
+	<body>
+		<div id="left-border">&nbsp;</div>
+		<div id="right-border">&nbsp;</div>
+
+		<div id="info">
+			<div>
+		    <b>WASD</b> Conditional Operators Move/Rotate, <b>Q</b> Pitch/Yaw Mode, <b>E</b> Roll Mode (restricts to A / D) <br/>
+		    <b>Note:</b> Defaults to Movement in 2D X/Y Plane
+			</div>		
+
+			<div id="station_pos">
+				<!-- Print position relative to space station here -->
+			</div>		
+		</div>
+		<script>
+
+			if ( WEBGL.isWebGLAvailable() === false ) {
+
+				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+
+			}
+
+			var radius = 6371;
+
+			var MARGIN = 0;
+			var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
+			var SCREEN_WIDTH = window.innerWidth;
+
+			var camera, controls, scene, renderer, stats;
+
+			var geometry, material, circle;
+			var circleObj = new THREE.Object3D();
+
+			var dirLight;
+
+			var composer;
+
+			var textureLoader = new THREE.TextureLoader();
+			
+			var d, dStation = new THREE.Vector3();
+
+			var clock = new THREE.Clock();
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
+				camera.position.z = radius * 5;
+
+				scene = new THREE.Scene();
+				scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
+
+				dirLight = new THREE.DirectionalLight( 0xffffff );
+				dirLight.position.set( - 1, 0, 1 ).normalize();
+				scene.add( dirLight );
+
+				// space station
+				
+				geometry = new THREE.SphereGeometry( 6371, 100, 50 );
+				material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+				circle = new THREE.Mesh( geometry, material );
+				scene.add( circle );
+
+				// Space station tracking
+
+				circleObj.position = geometry.vertices[0].clone();
+
+				//stars
+
+				var i, r = radius, starsGeometry = [ new THREE.BufferGeometry(), new THREE.BufferGeometry() ];
+
+				var vertices1 = [];
+				var vertices2 = [];
+
+				var vertex = new THREE.Vector3();
+
+				for ( i = 0; i < 250; i ++ ) {
+
+					vertex.x = Math.random() * 2 - 1;
+					vertex.y = Math.random() * 2 - 1;
+					vertex.z = Math.random() * 2 - 1;
+					vertex.multiplyScalar( r );
+
+					vertices1.push( vertex.x, vertex.y, vertex.z );
+
+				}
+
+				for ( i = 0; i < 1500; i ++ ) {
+
+					vertex.x = Math.random() * 2 - 1;
+					vertex.y = Math.random() * 2 - 1;
+					vertex.z = Math.random() * 2 - 1;
+					vertex.multiplyScalar( r );
+
+					vertices2.push( vertex.x, vertex.y, vertex.z );
+
+				}
+
+				starsGeometry[ 0 ].addAttribute( 'position', new THREE.Float32BufferAttribute( vertices1, 3 ) );
+				starsGeometry[ 1 ].addAttribute( 'position', new THREE.Float32BufferAttribute( vertices2, 3 ) );
+
+				var stars;
+				var starsMaterials = [
+					new THREE.PointsMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
+					new THREE.PointsMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
+					new THREE.PointsMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
+					new THREE.PointsMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
+					new THREE.PointsMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
+					new THREE.PointsMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
+				];
+
+				for ( i = 10; i < 30; i ++ ) {
+
+					stars = new THREE.Points( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
+
+					stars.rotation.x = Math.random() * 6;
+					stars.rotation.y = Math.random() * 6;
+					stars.rotation.z = Math.random() * 6;
+					stars.scale.setScalar( i * 10 );
+
+					stars.matrixAutoUpdate = false;
+					stars.updateMatrix();
+
+					scene.add( stars );
+
+				}
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				document.body.appendChild( renderer.domElement );
+
+				//
+
+				controls = new THREE.FlyControls( camera );
+
+				controls.movementSpeed = 1000;
+				controls.domElement = renderer.domElement;
+				controls.rollSpeed = Math.PI / 24;
+				controls.autoForward = false;
+				controls.dragToLook = false;
+
+				//
+
+				stats = new Stats();
+				document.body.appendChild( stats.dom );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// postprocessing
+
+				var renderModel = new THREE.RenderPass( scene, camera );
+				var effectFilm = new THREE.FilmPass( 0.35, 0.75, 2048, false );
+
+				effectFilm.renderToScreen = true;
+
+				composer = new THREE.EffectComposer( renderer );
+
+				composer.addPass( renderModel );
+				composer.addPass( effectFilm );
+
+			}
+
+			function onWindowResize() {
+
+				SCREEN_HEIGHT = window.innerHeight;
+				SCREEN_WIDTH = window.innerWidth;
+
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+
+				camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+				camera.updateProjectionMatrix();
+
+				composer.reset();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function screenPos() {
+
+			    var vector = new THREE.Vector3();
+			    
+			    var widthHalf = 0.5*SCREEN_WIDTH;
+			    var heightHalf = 0.5*SCREEN_HEIGHT;
+			    
+			    circleObj.updateMatrixWorld();
+			    vector.setFromMatrixPosition(circleObj.matrixWorld);
+			    vector.project(camera);
+			    
+			    vector.x = ( vector.x * widthHalf ) + widthHalf;
+			    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+			    
+				var div = document.getElementById('station_pos');
+				div.innerHTML = `space station: x: ${vector.x}, y: ${vector.y}`;
+			}
+
+			function render() {
+
+				var delta = clock.getDelta();
+				
+				dStation = camera.position.length();
+				d = (dStation - radius * 1.01);
+				
+				controls.movementSpeed = 0.33 * d;
+
+				controls.update( delta );
+				composer.render( delta );
+
+				screenPos();
+			}
+
+		</script>
+	</body>
+</html>
