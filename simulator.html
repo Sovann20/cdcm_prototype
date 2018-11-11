@@ -103,6 +103,8 @@
 			b {
 				color: #fc3d21
 			}
+
+
 		</style>
 
 		<script src="build/three.js"></script>
@@ -120,6 +122,15 @@
 
 		<script src="js/WebGL.js"></script>
 		<script src="js/libs/stats.min.js"></script>
+		<script type="text/javascript">
+			let level = 100;
+			//document.getElementById("batteryDisplay").innerHTML = level	
+			function batteryTimer(){
+				document.getElementById("batteryDisplay").innerHTML ="Battery:" + level + "%"
+				level--;
+			}
+			setInterval(batteryTimer, 10000)
+		</script>
 
 	</head>
 
@@ -145,7 +156,7 @@
 				ADD FUEL LOGIC HERE
 			</div>
 			<div>
-				ADD BATTERY LOGIC HERE
+				<h1 id="batteryDisplay">Battery: 100%</h1>
 			</div>
 		</div>
 
