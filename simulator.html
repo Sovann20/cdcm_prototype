@@ -109,6 +109,8 @@
 
 		<script src="js/controls/FlyControls.js"></script>
 
+        <script src="js/models/SpaceshipModel.js"></script>
+
 		<script src="js/shaders/CopyShader.js"></script>
 		<script src="js/shaders/FilmShader.js"></script>
 
@@ -167,8 +169,8 @@
 			var SCREEN_WIDTH = window.innerWidth;
 
 			var camera, controls, scene, renderer;
-
-			var geometry, material, circle;
+                  
+			var geometry, material, circle, spaceShip;
 			var circleObj = new THREE.Object3D();
 
 			var dirLight;
@@ -188,9 +190,6 @@
 			var botB = document.getElementById('bot-border');
 
 
-			init();
-			animate();
-
 			function init() {
 
 				camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
@@ -208,7 +207,11 @@
 				geometry = new THREE.SphereGeometry( 6371, 100, 50 );
 				material = new THREE.MeshBasicMaterial( { color: 0xe5dabd } );
 				circle = new THREE.Mesh( geometry, material );
-				scene.add( circle );
+				//scene.add( circle );
+                
+                spaceShip = Models.spaceShip();
+                spaceShip.scale.set(100,100,100);
+                scene.add(spaceShip);
 
 				// Space station tracking
 
@@ -322,10 +325,14 @@
 			function animate() {
 
 				requestAnimationFrame( animate );
+                
+                renderer.clear();
+                spaceShip.rotation.y += .01;
+                renderer.render( scene, camera );
 
 				render();
 			}
-
+                
 			function screenPos() {
 
 			    var vector = new THREE.Vector3();
@@ -372,6 +379,9 @@
 
 				screenPos();
 			}
+
+            init();
+            animate();
 
 		</script>
 	</body>
