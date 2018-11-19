@@ -4,6 +4,9 @@
  * Control updates by Jacob Perin
  */
 
+//This value is subject to change
+var _fuel = 10002;
+
 THREE.FlyControls = function ( object, domElement ) {
 
 	this.object = object;
@@ -34,6 +37,9 @@ THREE.FlyControls = function ( object, domElement ) {
 
 	this.cntrlState = document.getElementById('control-info-state');
 	this.cntrlBtn = document.getElementById('contol-info-button');
+    
+    // Shows the status of the fuel.
+    this.fuelState = document.getElementById('fuel-info-state');
 
 	// Pitch, Yaw active
 	this.qState = 0;
@@ -125,9 +131,11 @@ THREE.FlyControls = function ( object, domElement ) {
 				break;
 		}
 
-		this.updateMovementVector();
-		this.updateRotationVector();
-
+        if(_fuel > 0) {
+		    this.updateMovementVector();
+		    this.updateRotationVector();
+        } 
+       
 	};
 
 	this.keyup = function ( event ) {
@@ -209,7 +217,9 @@ THREE.FlyControls = function ( object, domElement ) {
 		this.moveVector.z = ( - forward + this.moveState.back );
 
 		//console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
-
+        
+        //Decreases fuel
+        fuelDegradation();
 	};
 
 	this.updateRotationVector = function () {
@@ -219,7 +229,7 @@ THREE.FlyControls = function ( object, domElement ) {
 		this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft );
 
 		//console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
-
+        fuelDegradation();
 	};
 
 	this.getContainerDimensions = function () {
@@ -278,3 +288,34 @@ THREE.FlyControls = function ( object, domElement ) {
 	this.updateMovementVector();
 	this.updateRotationVector();
 };
+
+//Decrements the fuel and updates the status
+function fuelDegradation() {
+    _fuel--;
+    //console.log(_fuel);
+    var currentPercent = Math.floor((_fuel/10000)*100);
+    if(_fuel >= 7500) {
+        document.getElementById('fuel-info-bar').style.color = "green";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level is good: "+currentPercent+"%";
+    }
+    else if(_fuel >= 5000) { 
+        //yellow - halfway
+        document.getElementById('fuel-info-bar').style.color = "yellow";
+        document.getElementById('fuel-info-bar').className = "fas fa-thermometer-half";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level is sufficent: "+currentPercent+"%";
+    }
+    else if(_fuel >= 1) {
+        //red - critical
+        document.getElementById('fuel-info-bar').style.color = "red";
+        document.getElementById('fuel-info-bar').className = "fas fa-thermometer-empty";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level is low: "+currentPercent+"%";
+    } 
+    else {
+        document.getElementById('fuel-info-bar').style.color = "red";
+        document.getElementById('fuel-info-bar').className = "fas fa-thermometer-empty";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level is empty.";
+    }
+};
+
+
+
