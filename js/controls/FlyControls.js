@@ -4,6 +4,108 @@
  * Control updates by Jacob Perin
  */
 
+
+ /*timer for oxygen and battery*/
+			let level = 100;
+			let oxygenLevel = 100
+			//document.getElementById("batteryDisplay").innerHTML = level	
+			function batteryTimer(){
+
+				if(level>0)
+				{
+					batteryClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
+
+					if(level>=90)
+					{
+						batteryClass = `<i class="fa fa-battery-4" style="font-size:48px;color:green"></i>`;
+					}
+					else if(level>=75)
+					{
+						batteryClass = `<i class="fa fa-battery-three-quarters" style="font-size:48px;color:green"></i>`;
+					}
+					else if(level>=65)
+					{
+						batteryClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`
+					}
+					else if(level>=55)
+					{
+						batteryClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`
+					}
+					else if(level>=35)
+					{
+						batteryClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`
+					}
+					else if(level<25 && level>15)
+					{
+						batteryClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`
+					}
+					else if(level<15)
+					{
+						batteryClass = `<i class="fa fa-battery-0" style="font-size:48px;color:red"></i>`
+					}
+
+
+
+					document.getElementById("batteryDisplay").innerHTML ="Battery:" + level + "%" + batteryClass;
+					level--;
+					oxygenTimer();
+				}
+				else
+				{
+					document.getElementById("oxygenDisplay").innerHTML ="Oxygen: 0%";
+					alert("OUT OF Battery");
+				}
+			}
+
+			function oxygenTimer(){
+				if(oxygenLevel>0)
+				{
+
+					oClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
+
+					if(level>=90)
+					{
+						oClass = `<i class="fa fa-battery-4" style="font-size:48px;color:green"></i>`;
+					}
+					else if(level>=75)
+					{
+						oClass = `<i class="fa fa-battery-three-quarters" style="font-size:48px;color:green"></i>`;
+
+					}
+					else if(level>=65)
+					{
+						oClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`
+					}
+					else if(level>=55)
+					{
+						oClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`
+					}
+					else if(level>=35)
+					{
+						oClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`
+					}
+					else if(level<25 && level>15)
+					{
+						oClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`
+					}
+					else if(level<15)
+					{
+						oClass = `<i class="fa fa-battery-0" style="font-size:48px;color:red"></i>`
+					}
+
+					document.getElementById("oxygenDisplay").innerHTML ="Oxygen:" + oxygenLevel + "%" + oClass;
+					oxygenLevel = level -2.5;
+				}
+				else{
+					document.getElementById("oxygenDisplay").innerHTML ="Oxygen: 0%";
+					alert("OUT OF Oxygen");
+				}
+			}
+
+			setInterval(batteryTimer, 10000);
+
+
+
 THREE.FlyControls = function ( object, domElement ) {
 
 	this.object = object;
@@ -41,6 +143,8 @@ THREE.FlyControls = function ( object, domElement ) {
 	// Roll active
 	this.eState = 0;
 
+if(level >0 && oxygenLevel>0)
+{	
 	this.keydown = function ( event ) {
 
 		if ( event.altKey ) {
@@ -278,3 +382,4 @@ THREE.FlyControls = function ( object, domElement ) {
 	this.updateMovementVector();
 	this.updateRotationVector();
 };
+}
