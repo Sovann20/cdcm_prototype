@@ -8,6 +8,9 @@
 /*timer for oxygen and battery*/
 			let level = 100;
 			let oxygenLevel = 100
+			let oClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
+			let batteryClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
+
 			//document.getElementById("batteryDisplay").innerHTML = level	
 			function batteryTimer(){
 
@@ -25,29 +28,27 @@
 					}
 					else if(level>=65)
 					{
-						batteryClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`
+						batteryClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`;
 					}
 					else if(level>=55)
 					{
-						batteryClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`
+						batteryClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`;
 					}
 					else if(level>=35)
 					{
-						batteryClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`
+						batteryClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`;
 					}
 					else if(level<25 && level>15)
 					{
-						batteryClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`
+						batteryClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`;
 					}
-					else if(level<15)
+					else
 					{
-						batteryClass = `<i class="fa fa-battery-0" style="font-size:48px;color:red"></i>`
+						batteryClass = `<i class="fa fa-battery-0" style="font-size:48px;color:red"></i>`;
 					}
 
-
-
-					document.getElementById("batteryDisplay").innerHTML ="Battery:" + level + "%" + batteryClass;
 					level--;
+					document.getElementById("batteryDisplay").innerHTML ="Battery:" + level + "%" + batteryClass;
 					oxygenTimer();
 				}
 				else
