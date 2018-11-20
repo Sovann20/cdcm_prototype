@@ -18,27 +18,27 @@
 				{
 					batteryClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
 
-					if(level>=90)
+					if(level>=85)
 					{
 						batteryClass = `<i class="fa fa-battery-4" style="font-size:48px;color:green"></i>`;
 					}
-					else if(level>=75)
+					else if(level>=70 && level <85)
 					{
 						batteryClass = `<i class="fa fa-battery-three-quarters" style="font-size:48px;color:green"></i>`;
 					}
-					else if(level>=65)
+					else if(level>=60 && level <70)
 					{
 						batteryClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`;
 					}
-					else if(level>=55)
+					else if(level>=50 && level <60)
 					{
 						batteryClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`;
 					}
-					else if(level>=35)
+					else if(level>=35 && level<50)
 					{
 						batteryClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`;
 					}
-					else if(level<25 && level>15)
+					else if(level>=15 && level<35)
 					{
 						batteryClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`;
 					}
@@ -64,38 +64,37 @@
 
 					oClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
 
-					if(level>=90)
+					if(oxygenLevel>=85)
 					{
 						oClass = `<i class="fa fa-battery-4" style="font-size:48px;color:green"></i>`;
 					}
-					else if(level>=75)
+					else if(oxygenLevel>=70 && oxygenLevel<85)
 					{
 						oClass = `<i class="fa fa-battery-three-quarters" style="font-size:48px;color:green"></i>`;
-
 					}
-					else if(level>=65)
+					else if(oxygenLevel>=60 && oxygenLevel<70)
 					{
 						oClass = `<i class="fa fa-battery-3" style="font-size:48px;color:green"></i>`
 					}
-					else if(level>=55)
+					else if(oxygenLevel>=50 && oxygenLevel<60)
 					{
 						oClass = `<i class="fa fa-battery-half" style="font-size:48px;color:yellow"></i>`
 					}
-					else if(level>=35)
+					else if(oxygenLevel>=35 && oxygenLevel<50)
 					{
 						oClass = `<i class="fa fa-battery-2" style="font-size:48px;color:yellow"></i>`
 					}
-					else if(level<25 && level>15)
+					else if(oxygenLevel>=15 && oxygenLevel<35)
 					{
 						oClass = `<i class="fa fa-battery-quarter" style="font-size:48px;color:red"></i>`
 					}
-					else if(level<15)
+					else
 					{
 						oClass = `<i class="fa fa-battery-0" style="font-size:48px;color:red"></i>`
 					}
 
 					document.getElementById("oxygenDisplay").innerHTML ="Oxygen:" + oxygenLevel + "%" + oClass;
-					oxygenLevel = level -2.5;
+					oxygenLevel = oxygenLevel -2.5;
 				}
 				else{
 					document.getElementById("oxygenDisplay").innerHTML ="Oxygen: 0%";
