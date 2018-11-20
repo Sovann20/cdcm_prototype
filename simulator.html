@@ -110,6 +110,7 @@
 		<script src="build/three.js"></script>
 
 		<script src="js/controls/FlyControls.js"></script>
+        <script src="js/controls/ExternalSystems.js"></script>
 
         <script src="js/models/SpaceshipModel.js"></script>
 
@@ -151,14 +152,16 @@
 				ADD X,Y,Z LOGIC HERE
 			</div>
 			<div>
-                 <span id="fuel-info-state">Fuel status good: 100%</span>
+                 <span id="fuel-info-state">Fuel Level: 100%</span>
                 <i id="fuel-info-bar" class="fas fa-thermometer-full"></i>
             </div>
 			<div>
-				<p id="batteryDisplay">Fuel Level: 100%<i class="fa fa-battery-full" style="font-size:48px;color:green"></i></p>
+				<span id="batteryDisplay">Battery Level: 100%
+                    <i class="fa fa-battery-full" style="color:green"></i>
+                </span>
 			</div>
 			<div>
-				<p id="oxygenDisplay">Oxygen Level: 100% <i class="fa fa-battery-full" style="font-size:48px;color:green"></i></p>
+				<span id="oxygenDisplay">Oxygen Level: 100% <i class="fa fa-battery-full" style="color:green"></i></span>
 			</div>
 		</div>
 
