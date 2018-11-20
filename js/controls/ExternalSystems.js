@@ -1,5 +1,5 @@
 /*
- * Outputs the external system's states.
+ * Outputs the external systems' states.
  * @author Sam Guenette and Sovann Chak
  * 
  */
