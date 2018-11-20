@@ -6,7 +6,6 @@
 
 //This value is subject to change
 var _fuel = 10002;
-//var _x=-3, _y=0, _z=-100;
 
 THREE.FlyControls = function ( object, domElement ) {
 
@@ -219,10 +218,6 @@ THREE.FlyControls = function ( object, domElement ) {
 
    		//console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
         
-        //_x -= this.moveVector.x;
-        //_y -= this.moveVector.y;
-        //_z -= this.moveVector.z;
-
         //Decreases fuel
         fuelDegradation();
 	};
@@ -234,9 +229,8 @@ THREE.FlyControls = function ( object, domElement ) {
 		this.rotationVector.z = ( - this.moveState.rollRight + this.moveState.rollLeft );
 
 		//console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
-       // _x -= this.rotationVector.x;
-       // _y -= this.rotationVector.y;
-        //_z -= this.rotationVector.z;
+        
+        //Decreases fuel
         fuelDegradation();
 	};
 
@@ -324,7 +318,6 @@ function fuelDegradation() {
         document.getElementById('fuel-info-state').innerHTML = "Fuel is empty.";
     }
 
-    //console.log(_x+", "+_y+", "+_z);
 };
 
 
