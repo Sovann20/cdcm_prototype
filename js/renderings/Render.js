@@ -1,3 +1,9 @@
+/*
+* Rendering of the camera, object, and ship. Also tracks the cameras movements for the 
+* coordinates.
+* @author Jacob Perin and Sovann Chak
+*/
+
 if ( WEBGL.isWebGLAvailable() === false ) {
     
     document.body.appendChild( WEBGL.getWebGLErrorMessage() );
