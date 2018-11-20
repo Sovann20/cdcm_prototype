@@ -5,7 +5,7 @@
  */
 //Timer for battery and oxygen
 
-/*timer for oxygen and battery*/
+/*timer for oxygen and battery based inside a timer*/
 			let level = 100;
 			let oxygenLevel = 100
 			let oClass = `<i class="fa fa-battery-full" style="font-size:48px;color:green"></i>`;
@@ -103,8 +103,7 @@
 			}
 
 			setInterval(batteryTimer, 10000);
-
-
+//-----------------------------------------------------------------------------------------------------------------------------
 
 //This value is subject to change
 var _fuel = 10002;
