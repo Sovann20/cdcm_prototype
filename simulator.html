@@ -141,10 +141,10 @@
 		<div id="astro-stats">
 			ADD INFORMATION HERE
 			<div>
-				ADD X,Y,Z LOGIC HERE
-			</div>
+		        <span id="coordinate-info">x: 0<br>y: 0<br>z: 1</span>	
+            </div>
 			<div>
-                 <span id="fuel-info-state">Fuel status good: 100%</span>
+                <span id="fuel-info-state">Fuel status good: 100%</span>
                 <i id="fuel-info-bar" class="fas fa-thermometer-full"></i>
             </div>
 			<div>
@@ -183,6 +183,8 @@
 			var textureLoader = new THREE.TextureLoader();
 			
 			var d, dStation = new THREE.Vector3();
+            var camPosition = new THREE.Vector3();
+            var shipPosition = new THREE.Vector3();
 
 			var clock = new THREE.Clock();
 
@@ -332,7 +334,7 @@
                 renderer.clear();
                 spaceShip.rotation.y += .01;
                 renderer.render( scene, camera );
-
+                coordinates();
 				render();
 			}
                 
@@ -380,12 +382,20 @@
 				controls.update( delta );
 				composer.render( delta );
 
-				screenPos();
-			}
+                screenPos();
+            }
+
+            function coordinates() {
+                //Retrieves ships coordinates relative to the camera
+                shipPosition.setFromMatrixPosition( circleObj.matrixWorld );
+                shipPosition.project(camera);
+
+//                console.log("Ship: "+Math.ceil(shipPosition.x*100)+", "+Math.ceil(shipPosition.y*100)+", "+Math.floor(shipPosition.z));
+                document.getElementById('coordinate-info').innerHTML = "x: " + Math.ceil(shipPosition.x*100)+ "<br>y: " + Math.ceil(shipPosition.y*100) + "<br>z: " + Math.floor(shipPosition.z);  
+            }
 
             init();
             animate();
-
 		</script>
 	</body>
 </html>
