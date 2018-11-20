@@ -110,6 +110,7 @@
 		<script src="build/three.js"></script>
 
 		<script src="js/controls/FlyControls.js"></script>
+        <script src="js/controls/ExternalSystems.js"></script>
 
         <script src="js/models/SpaceshipModel.js"></script>
 
@@ -123,6 +124,13 @@
 		<script src="js/postprocessing/FilmPass.js"></script>
 
 		<script src="js/WebGL.js"></script>
+
+		<script src="js/libs/stats.min.js"></script>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
 	</head>
 
 	<body>
@@ -144,11 +152,16 @@
 		        <span id="coordinate-info">x: 0<br>y: 0<br>z: 1</span>	
             </div>
 			<div>
-                <span id="fuel-info-state">Fuel status good: 100%</span>
+                 <span id="fuel-info-state">Fuel Level: 100%</span>
                 <i id="fuel-info-bar" class="fas fa-thermometer-full"></i>
             </div>
 			<div>
-				ADD BATTERY LOGIC HERE
+				<span id="batteryDisplay">Battery Level: 100%
+                    <i class="fa fa-battery-full" style="color:green"></i>
+                </span>
+			</div>
+			<div>
+				<span id="oxygenDisplay">Oxygen Level: 100% <i class="fa fa-battery-full" style="color:green"></i></span>
 			</div>
 		</div>
 

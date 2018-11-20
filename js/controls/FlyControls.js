@@ -304,24 +304,24 @@ function fuelDegradation() {
     var currentPercent = Math.floor((_fuel/10000)*100);
     if(_fuel >= 7500) {
         document.getElementById('fuel-info-bar').style.color = "green";
-        document.getElementById('fuel-info-state').innerHTML = "Fuel level is good: "+currentPercent+"%";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level: "+currentPercent+"%";
     }
     else if(_fuel >= 5000) { 
         //yellow - halfway
         document.getElementById('fuel-info-bar').style.color = "yellow";
         document.getElementById('fuel-info-bar').className = "fas fa-thermometer-half";
-        document.getElementById('fuel-info-state').innerHTML = "Fuel level is sufficent: "+currentPercent+"%";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level: "+currentPercent+"%";
     }
     else if(_fuel >= 1) {
         //red - critical
         document.getElementById('fuel-info-bar').style.color = "red";
         document.getElementById('fuel-info-bar').className = "fas fa-thermometer-empty";
-        document.getElementById('fuel-info-state').innerHTML = "Fuel level is low: "+currentPercent+"%";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel level low: "+currentPercent+"%";
     } 
     else {
         document.getElementById('fuel-info-bar').style.color = "red";
         document.getElementById('fuel-info-bar').className = "fas fa-thermometer-empty";
-        document.getElementById('fuel-info-state').innerHTML = "Fuel level is empty.";
+        document.getElementById('fuel-info-state').innerHTML = "Fuel is empty.";
     }
 
     //console.log(_x+", "+_y+", "+_z);
