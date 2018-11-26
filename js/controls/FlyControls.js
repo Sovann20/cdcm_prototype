@@ -7,6 +7,7 @@
 //This value is subject to change
 var _fuel = 10002;
 
+
 THREE.FlyControls = function ( object, domElement ) {
 
 	this.object = object;
@@ -48,6 +49,8 @@ THREE.FlyControls = function ( object, domElement ) {
 	this.eState = 0;
 
 	this.keydown = function ( event ) {
+
+		if(level>0 && oxygenLevel >0){
 
 		if ( event.altKey ) {
 
@@ -134,12 +137,14 @@ THREE.FlyControls = function ( object, domElement ) {
         if(_fuel > 0) {
 		    this.updateMovementVector();
 		    this.updateRotationVector();
+        }
         } 
        
 	};
 
 	this.keyup = function ( event ) {
 
+		if(level>0 && oxygenLevel >0){
 		this.cntrlBtn.innerHTML = "";
 
 		switch ( event.keyCode ) {
@@ -184,6 +189,7 @@ THREE.FlyControls = function ( object, domElement ) {
 				}				
 				break;
 		}
+	}
 
 		this.updateMovementVector();
 		this.updateRotationVector();
